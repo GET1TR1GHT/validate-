@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day1</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .xixi {
+            width: 170px;
+            height: 300px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            text-align: center;
+        }
+
+        p {
+            padding: 15px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="xixi">
+    <legend>用户登录</legend>
+    <form action="post" id="ee">
+        <p>
+            <label for="username">用户</label>
+            <input type="text" name="username" id="username">
+        </p>
+        <p><label for="password">密码</label>
+            <input type="password" name="password" id="password">
+        </p>
+        <p><label for="comf-password">确定密码</label>
+            <input type="password" name="comf-password" id="comf-password">
+        </p>
+        <p>
+            <button id="check">检查表单</button>
+        </p>
+    </form>
+</div>
+
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script>
+    var validator;
+    $(document).ready(function () {
+        validator=$("#ee").validate({
+            debug:true,
+            debug:true,
+            rules: {
+                username: {
+                    required: true,
+//                    minlength: 2,
+//                    maxlength: 6,
+//                    rangelength:[2,10],
+                    remote:{
+                        url:"remote.json",
+                        type:"post",
+                        data:{
+                            loginTime:function () {
+                                return+new Date;
+                            }
+                        }
+                    },
+//                    email:true,
+                },
+                password: {
+                    required: true,
+                    minlength: 2,
+                    maxlength: 6,
+                },
+                "comf-password": {
+                    equalTo:"#password",
+                }
+            },
+            messages: {
+                username: {
+                    required: "必填项目",
+//                    minlength: "最小长度是2",
+//                    maxlength: "最大长度是6",
+                    rangelength:"最小长度为2，最大长度为10",
+                    remote:"用户名不存在",
+                },
+                password: {
+                    required: "必填项目",
+                    minlength: "最小长度是2",
+                    maxlength: "最大长度是6",
+                }
+            }
+        });
+        $("#check").click(function () {
+            alert($("#ee").valid()?"填写正确":"填写错误");
+        })
+    });
+</script>
+</body>
+</html>
